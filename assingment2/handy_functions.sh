@@ -3,16 +3,25 @@
 function move {
 
 	if ["$#" -ne 1]; then
-		echo "Illegal input"
+		echo "Illegal input. Useage: move src dst"
 		exit 2
+
 	fi
+	# Assingning variables
 	src = $1
 	dst = $2
 
-	echo "Attempting to move $src to $dst"
 	
-	if [src exisits]; then
-
+	# Checking if directories exist	
+	if [[ ! -d /$src ]]; then
+		echo "src dierctory does not exist"
+		exit 2
 	fi
-	echo "Directory does not exist"
+	if [[ ! -d /$dst ]]; then
+		echo "dst dierctory does not exist"
+		exit 2
+	fi
+
+	echo "Attempting to move $src to $dst"
+	mv -rf  $src ./$dst
 }

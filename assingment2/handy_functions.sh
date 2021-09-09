@@ -1,27 +1,33 @@
 #!/bin/bash -x
 
-function move {
+input1="$1"
+input2="$2"
 
-	if ["$#" -ne 1]; then
-		echo "Illegal input. Useage: move src dst"
-		exit 2
-
-	fi
+ function_move () {
 	# Assingning variables
-	src = $1
-	dst = $2
+	src=$input1
+	dst=$input2
 
 	
 	# Checking if directories exist	
-	if [[ ! -d /$src ]]; then
-		echo "src dierctory does not exist"
+	if [ ! -d "$src" ]; then
+		echo " $src src dierctory does not exist"
 		exit 2
 	fi
-	if [[ ! -d /$dst ]]; then
+	# find / -type d -name $src > $src
+	if [ ! -d "$dst" ]; then
 		echo "dst dierctory does not exist"
 		exit 2
 	fi
 
 	echo "Attempting to move $src to $dst"
-	mv -rf  $src ./$dst
+	mv $src ./$dst
 }
+
+echo "$1 input1, $2 input2"
+if [ $# -lt 2 ]; then
+	echo "Illegal input. Useage: move src dst"
+	exit 2
+
+fi
+function_move 

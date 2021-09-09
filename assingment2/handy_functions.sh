@@ -1,33 +1,65 @@
 #!/bin/bash -x
 
-input1="$1"
-input2="$2"
+dst=""
+src=""
 
  function_move () {
-	# Assingning variables
-	src=$input1
-	dst=$input2
-
-	
 	# Checking if directories exist	
-	if [ ! -d "$src" ]; then
-		echo " $src src dierctory does not exist"
-		exit 2
-	fi
-	# find / -type d -name $src > $src
-	if [ ! -d "$dst" ]; then
-		echo "dst dierctory does not exist"
-		exit 2
-	fi
+	check_if_exist $src "src"
 
-	echo "Attempting to move $src to $dst"
-	mv $src ./$dst
+	check_if_exist $dst "dst"
+
+
+	echo "Moving directory and it's content $src to $dst"
+	
+
+	# In the case of file specific move, errors are not handeled
+	if [ ! -z $1 ]; then
+		src=$src/*$1
+		echo "Only moving "$1" files"
+	fi
+		
+	mv  $src ./$dst
+
 }
 
-echo "$1 input1, $2 input2"
-if [ $# -lt 2 ]; then
-	echo "Illegal input. Useage: move src dst"
-	exit 2
+check_if_exist () {
 
+	if [ ! -d $1 ]; then
+		echo " $2 dierctory does not exist"
+		
+		# If the dir doesn't exist the user wil get to option to create one
+		if [ $2 = "dst" ]; then
+			create_dir 
+		else
+			exit 1
+		fi
+	fi
+}
+
+create_dir () {
+	echo "Do you want to create a directory with that name?"
+	read reply
+
+	if [ "$reply" = "yes" ]; then
+		echo "Do you want it to add the current date to your dir name?"
+		read reply2
+
+		if [ "$reply2" = "yes" ]; then
+			date=$(date '+%Y-%m-%d %H:%M')
+			mkdir "date-$dst"
+		else
+			mkdir $dst
+		fi
+	fi
+}
+
+if [ $# -lt 2 ]; then
+	echo "Illegal input. Useage: script src dst"
+	exit 1
+else
+	dst=$2
+	src=$1
+	function_move $3 
 fi
-function_move 
+

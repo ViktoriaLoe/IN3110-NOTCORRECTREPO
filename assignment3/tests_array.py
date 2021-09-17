@@ -1,44 +1,29 @@
-array = [True, 20, 40.2]
-array_new = [float(a) for a in array]
-print(array_new)
+import pytest 
+from array import Array
 
-def add(a,b):
-	return a+b
+def test_constructor():
+    test_array = Array((2,), 4, 2)
+    test_arr2 = Array((2,2),4, 2, 1, 2)
+    assert(test_arr2[1] == [1,2])	
+    assert(test_arr2[1][0] == 1)	
+    assert(str(test_array) == "array: [4, 2]")
+    assert test_array[1] == 2
 
-def elm_add(a,b):
-	arr = list()
-	for intrg in a:
-		arr.append(add(intrg,b))
-	return arr
+def test_types():
+    my_Array = Array((2, 3), 1, 2, 3, 4, 5, 6)
+    assert(my_Array.type_of_array == "int" or "float")
+    print(min(my_Array))
+    #assert(min(my_Array) == 1) THIS IS WRONG MAKE IT RECURSIVE
 
-
-def use_func_on_elemts(array1, array2, func):
-	"""
-	Recuesivly iterates over array1 and implements func on each element
-	with num as the other input
-
-	returns a list with the new elements
-	"""
-	if type(array1) is int or float:
-		return list(func(array1, array2))
-	else:
-		arr = list()
-		for a in array1:
-			arr.append(use_func_on_elemts(a, array2, func))
-
-
-#print(use_func_on_elemts(array_new, 1, elm_add))
-
-
-def create_arr(shape, vaules, array):
-	
-	for ind in shape:
-		if ind+1 < len(shape): # base case ytterste tall
-			array
-		else:
-			list(array).append([] for x in range(ind))
-
-	pass
-
-arr = []
-print(arr.append([] * 3)
+def test_math_functions():
+    test_array = Array((2,1), 4, 2)
+    test_arr2 =	 Array((2,1), 4, 2)
+    print(test_array, test_arr2)
+    assert(test_array + test_arr2 == [[8],[4]])
+    assert(test_array - test_arr2 == [[0],[0]])
+    assert(test_array * test_arr2 == [[16],[4]])
+    assert(test_arr2 * test_array == test_array * test_arr2)
+    # test that == is correct
+    assert(test_array == test_arr2)
+    # test is euql
+    

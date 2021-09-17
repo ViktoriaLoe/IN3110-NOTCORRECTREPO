@@ -22,6 +22,7 @@ class Array:
             ValueError: If the values are not all of the same types.
             ValueError: If the number of values does not fit with the shape.
         """
+
         self.array = [] 
         # Check if the values are of homogeneous types
         all_types = [int, float, bool]
@@ -75,7 +76,6 @@ class Array:
             else:
                 raise ValueError("They are not all of valid same types")	
 
-        
 
 #### ACCESS FUNCTIONS
     def __getitem__(self, pos):
@@ -85,6 +85,7 @@ class Array:
         Returns :
         value : Value of the given item .
         """
+        # handle [][] gets
         return self.array[pos]
 
     def __str__(self):
@@ -365,7 +366,7 @@ class Array:
             raise TypeError("Input is not correct, not of type Array/int/float")
         
 
-    def min_element(self):
+    def min_element(self): ## CORRECT THIS
         """Returns the smallest value of the array.
         Only needs to work for types int and float (not boolean).
         Returns:

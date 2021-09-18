@@ -139,7 +139,6 @@ class Array:
         """
         # Base case, finds index, preforms addition, adds to new array at index
         if len(array1) > 0 and isinstance(array1[0], int or float): 
-            print("yes")
             return list(map(func, array1, array2))
 
         # interates thorugh elements in array
@@ -167,6 +166,8 @@ class Array:
         """
 
         if len(array1) > 0 and isinstance(array1[0], int or float): 
+            if func == self.compare_elm:
+                return func (array1, num)
             return list(func (array1, num))
 
         # interates thorugh elements in array and call on inner elements
@@ -174,7 +175,7 @@ class Array:
             arr = list()
             for a in array1: 
                 arr.append(self.use_func_on_elemts(a, num, func))
-
+        return arr
         
 
 ##### ADDITION FUNCTIONS
@@ -357,29 +358,42 @@ class Array:
             ValueError: if the shape of self and other are not equal.
         """
         if isinstance(other, Array):
-            for a, b in zip(self.array, other.array):
-                if a != b:
-                    return False
-            return True
+            res =self.math_on_input_arr(other, self.compare_arr)
+            
+        elif isinstance(other, int or float):
+            res = self.use_func_on_elemts(self.array, other, self.compare_elm)
+            
 
         else:
             raise TypeError("Input is not correct, not of type Array/int/float")
+
+        if not all(res):
+            res = False
+        else:
+            res = True 
+        return res
+
+    def compare_arr(self, a, b):
+        return a == b
         
 
+    def compare_elm(self, a, b):
+        for arg in a:
+            return self.compare_arr(arg, b)
+
+        
     def min_element(self): ## CORRECT THIS
         """Returns the smallest value of the array.
         Only needs to work for types int and float (not boolean).
         Returns:
             float: The value of the smallest element in the array.
         """
+
         if len(self.array) == 0:
             raise ValueError("The array is empty, smallest value doesn't exist")
-        min = self.array[0]
-        for value in self.array:
-            if value < min:
-                min = value
+        my_min = min([min(a) for a in self.array]) 
 
-        return min
+        return my_min
 
 
 #### END OF CLASS
@@ -400,8 +414,12 @@ def test_constructor():
 def test_functions():
     test_array = Array((2,1), 4, 2)
     test_arr2 = Array((2,1),4, 2)
-    print(test_array, test_arr2)
-    print(test_array + test_arr2)
+    my_Array = Array((2, 3), 1, 2, 3, 4, 5, 6)
+    print(test_arr2.min_element())
+    print(test_arr2 == test_array)
+    print("TESTING EQYaLS")
+    print(test_array.is_equal(2)) 
+    print(test_arr2.is_equal(test_array))
     pass
 
 #test_constructor()

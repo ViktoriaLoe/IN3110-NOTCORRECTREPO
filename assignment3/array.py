@@ -152,6 +152,38 @@ class Array:
         returns a list with the new elements
         Assumes that array1 is of type Array and num of type int or float 
         Args:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
             array1 (list): Array we will apply func on
             num (int or float): number we will apply func with array1 on
             func (self.function): 

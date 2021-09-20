@@ -20,8 +20,7 @@ It only supports arrays with values of type: int/float/bool
 
 
 ### Usage
-How to create your own Array objects:
-
+__How to create your own Array objects:__
 2D_array = Array((n,m) values)
 	
 	there must be n*m values in total
@@ -40,8 +39,7 @@ Functions you can use on array:
 - min()
 - is_equal()
 
-How to run tests:
-
+__How to run tests:__
 pytest tests_array.py -v (can be run with and without flag)
 
 

@@ -183,7 +183,7 @@ class Array:
 
 
 
-        
+
             array1 (list): Array we will apply func on
             num (int or float): number we will apply func with array1 on
             func (self.function): 
@@ -433,30 +433,3 @@ class Array:
 
 
 #### END OF CLASS
-        
-def test_constructor():
-    test_array = Array((2,), 4, 2)
-    test_arr2 = Array((2,1),4, 2)
-    print(test_array.array)
-    print(test_arr2.array)
-    assert(test_array.array == [4, 2])
-    assert test_array[1] == 2
-    my_Array = Array((2, 3), 1, 2, 3, 4, 5, 6)
-    print(my_Array)
-    assert(my_Array.type_of_array == "int" or "float")
-
-    #self.assertRaises(ValueError, Array((3,1),1,2))
-
-def test_functions():
-    test_array = Array((2,1), 4, 2)
-    test_arr2 = Array((2,1),4, 2)
-    my_Array = Array((2, 3), 1, 2, 3, 4, 5, 6)
-    print(test_arr2.min_element())
-    print(test_arr2 == test_array)
-    print("TESTING EQYaLS")
-    print(test_array.is_equal(2)) 
-    print(test_arr2.is_equal(test_array))
-    pass
-
-#test_constructor()
-test_functions()

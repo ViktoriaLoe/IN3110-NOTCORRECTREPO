@@ -3,11 +3,8 @@ import typing_extensions
 
 
 class Array:
-	
-
 
     def __init__(self, shape, *values):
-
         """
         Initialize an array of 1-dimensionality. Elements can only be of types:
         - int
@@ -46,35 +43,33 @@ class Array:
         amount_of_arrs = shape[0]
         prev = 0
 
-        # Checking what types of content 
-        for types in all_types:
-            antall = sum(isinstance(value, types) for value in values) # Counts number of elements for type
 
-            if antall == range(1,len(values)-1):  # They're not all the same types
-                self.type_of_array = "float"
-                temp_arr = [float(v) for v in values] # fills temporary array with all values as floats
-                for arr in range(amount_of_arrs):
-                    self.array.append(temp_arr[prev:prev+num_per_arr]) # Appends correct amount of values to main array
-                    prev += num_per_arr
-                break
+        cnt_ints =sum(isinstance(value, int) for value in values)
+        cnt_float =sum(isinstance(value, float) for value in values)
+        cnt_bool =sum(isinstance(value, bool) for value in values)
 
-            elif antall == len(values): # They're all the same type
-                self.type_of_array = str(types)
+        #There are invalid types in array
+        if cnt_ints+cnt_float+cnt_bool < len(values):
+            raise ValueError("They are not all of valid same types")	
 
-                temp_arr = [v for v in values] # fills temporary array with all values
+        # They're the same type
+        elif (cnt_ints or cnt_float or cnt_bool) == len(values):
+            temp_arr = [v for v in values] # fills temporary array with all values
 
-                if num_per_arr == -1:   # Exception case where final array is the same as input array
-                    self.array = temp_arr
-                    break
+        #they're not all the same type, but all valid types
+        else: 
+            temp_arr = [float(v) for v in values] # fills temporary array with all values as floats
+            
 
-                for arr in range(amount_of_arrs): # Other case: shape has more than ' ' dimentions
-                    self.array.append(temp_arr[prev:prev+num_per_arr])
-                    prev += num_per_arr
+        if num_per_arr == -1:   # Exception case where final array is the same as input array
+            self.array = temp_arr
 
-                break
+        else:
+            for arr in range(amount_of_arrs): # Other case: shape has more than ' ' dimentions
+                self.array.append(temp_arr[prev:prev+num_per_arr])
+                prev += num_per_arr
 
-            else:
-                raise ValueError("They are not all of valid same types")	
+
 
 
 #### ACCESS FUNCTIONS
@@ -105,8 +100,8 @@ class Array:
             bool: True if the two Arrays have the same shape. False otherwise
         """
         if this.shape != other.shape:
-            #return False
-            raise ValueError("The are not the same shape")
+            return False
+            #raise ValueError("The are not the same shape")
         return True
         
     def math_on_input_arr(self, other, type):
@@ -117,12 +112,10 @@ class Array:
             type (function name): reference to the function we will call
         Return: 
             new_array (list) : result of function applied to the two arrays"""
-        new_arrary = []
+        if self.same_shape(self, other) == False:
+            return False # Error thrown if False
+        return self.use_func_on_arr(self.array, other.array, type)
 
-        self.same_shape(self, other) # Error thrown if False
-        new_arrary = self.use_func_on_arr(self.array, other.array, type)
-
-        return new_arrary
 
 
     def use_func_on_arr(self, array1, array2, func):
@@ -145,6 +138,7 @@ class Array:
         array_fin = list()
         for a,b in zip(array1, array2):
             array_fin.append(self.use_func_on_arr(a, b, func))
+            print(func, array_fin)
 
         return array_fin
     
@@ -164,10 +158,10 @@ class Array:
         Return:
             new_array (list) : the result of func applied on arrays
         """
-
-        if len(array1) > 0 and isinstance(array1[0], int or float): 
+        
+        if isinstance(array1, int or float) or len(array1) > 0:
             if func == self.compare_elm:
-                return func (array1, num)
+                return func(array1, num)
             return list(func (array1, num))
 
         # interates thorugh elements in array and call on inner elements
@@ -362,11 +356,14 @@ class Array:
             
         elif isinstance(other, int or float):
             res = self.use_func_on_elemts(self.array, other, self.compare_elm)
-            
 
         else:
             raise TypeError("Input is not correct, not of type Array/int/float")
 
+        print(res, self.array, other)
+
+        if isinstance(res, bool):
+            return res
         if not all(res):
             res = False
         else:
@@ -378,10 +375,15 @@ class Array:
         
 
     def compare_elm(self, a, b):
+        arr = list()
         for arg in a:
-            return self.compare_arr(arg, b)
+            if isinstance(arg, list):
+                arr.append(self.compare_arr(arg[x], b) for x in arg)
+            else:
+                arr.append(self.compare_arr(arg, b))
+        print ("arr: ", arr)
+        return arr
 
-        
     def min_element(self): ## CORRECT THIS
         """Returns the smallest value of the array.
         Only needs to work for types int and float (not boolean).
@@ -391,6 +393,8 @@ class Array:
 
         if len(self.array) == 0:
             raise ValueError("The array is empty, smallest value doesn't exist")
+        if isinstance(self.array[0], int or float):
+            return min(self.array)
         my_min = min([min(a) for a in self.array]) 
 
         return my_min

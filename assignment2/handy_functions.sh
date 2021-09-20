@@ -46,8 +46,8 @@ create_dir () {
 		read reply2
 
 		if [ "$reply2" = "yes" ]; then
-			dst="$(date +%F-%h-%m)-$dst"
-			mkdir $dst 
+			date=$(date +%F_%H-%M)
+			mkdir "$date-$dst"
 		else
 			mkdir $dst
 		fi
